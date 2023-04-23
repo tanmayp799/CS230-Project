@@ -6,7 +6,7 @@ if [ "$#" -lt 4 ]; then
     exit 1
 fi
 
-TRACE_DIR=$PWD
+TRACE_DIR=$PWD/dpc3_traces
 BINARY=${1}
 N_WARM=${2}
 N_SIM=${3}
@@ -19,7 +19,7 @@ if [ -z $TRACE_DIR ] || [ ! -d "$TRACE_DIR" ] ; then
     exit 1
 fi
 
-if [ ! -f "$BINARY" ] ; then
+if [ ! -f "bin/$BINARY" ] ; then
     echo "[ERROR] Cannot find a ChampSim binary: bin/$BINARY"
     exit 1
 fi

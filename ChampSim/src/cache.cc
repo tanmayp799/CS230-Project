@@ -1,5 +1,6 @@
 #include "cache.h"
 #include "set.h"
+#include "ooo_cpu.h"
 
 uint64_t l2pf_access = 0;
 
@@ -18,11 +19,41 @@ void CACHE::handle_fill()
 #endif
 
         uint32_t mshr_index = MSHR.next_fill_index;
+        uint64_t victim; //Stores address of victim
 
         // find victim
         uint32_t set = get_set(MSHR.entry[mshr_index].address), way;
         if (cache_type == IS_LLC) {
             way = llc_find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+            if(block[set][way].valid) //If the victim is valid at LLC level, we have to remove it from L1 and L2 cache
+            {
+              victim = block[set][way].address; //This address will be sent to upper level caches for back-invalidation
+
+              int invalidate_resp;
+              for(int i=0;i<NUM_CPUS;i++)
+              {
+                invalidate_resp = ooo_cpu[i].L2C.invalidate_entry(victim); //invalidate_entry() returns -1 if the block is not present in cache
+
+                if(invalidate_resp>=0) //block found and invalidated in L2. Now we have to invalidate it in L1
+                {
+                    ooo_cpu[i].L1D.invalidate_entry(victim);
+                    ooo_cpu[i].L1I.invalidate_entry(victim);
+                }
+              }
+            }
+        }
+        else if(cache_type== IS_L2C)//If we are at L2 cache, we have to invalidate the copy in L1 cache.
+        {
+          way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+          if(block[set][way].valid)
+          {
+            victim = block[set][way].address;
+
+            ooo_cpu[fill_cpu].L1D.invalidate_entry(victim);
+            ooo_cpu[fill_cpu].L1I.invalidate_entry(victim);
+          }
         }
         else
             way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
