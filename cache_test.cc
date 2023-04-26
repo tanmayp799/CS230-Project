@@ -1,8 +1,6 @@
-
- 
-
 #include "cache.h"
 #include "set.h"
+#include "ooo_cpu.h"
 
 uint64_t l2pf_access = 0;
 
@@ -21,14 +19,158 @@ void CACHE::handle_fill()
 #endif
 
         uint32_t mshr_index = MSHR.next_fill_index;
+        uint64_t victim; //Stores address of victim
 
         // find victim
         uint32_t set = get_set(MSHR.entry[mshr_index].address), way;
-        if (cache_type == IS_LLC) {
-            way = llc_find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+        //**************DEFAULT*****************************
+        
+        if(cache_type==IS_LLC)
+        {
+          way = llc_find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
         }
         else
-            way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+          way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+
+//************************INCLUSIVE POLICY*************************************************************//
+
+
+        // if (cache_type == IS_LLC) {
+        //     way = llc_find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+        //     if(block[set][way].valid) //If the victim is valid at LLC level, we have to remove it from L1 and L2 cache
+        //     {
+        //       victim = block[set][way].address; //This address will be sent to upper level caches for back-invalidation
+
+        //       int invalidate_resp;
+        //       for(int i=0;i<NUM_CPUS;i++)
+        //       {
+        //         invalidate_resp = ooo_cpu[i].L2C.invalidate_entry(victim); //invalidate_entry() returns -1 if the block is not present in cache
+
+        //         if(invalidate_resp>=0) //block found and invalidated in L2. Now we have to invalidate it in L1
+        //         {
+        //             ooo_cpu[i].L1D.invalidate_entry(victim);
+        //             ooo_cpu[i].L1I.invalidate_entry(victim);
+        //         }
+        //       }
+        //     }
+        // }
+        // else if(cache_type== IS_L2C)//If we are at L2 cache, we have to invalidate the copy in L1 cache.
+        // {
+        //   way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+        //   if(block[set][way].valid)
+        //   {
+        //     victim = block[set][way].address;
+
+        //     ooo_cpu[fill_cpu].L1D.invalidate_entry(victim);
+        //     ooo_cpu[fill_cpu].L1I.invalidate_entry(victim);
+        //   }
+        // }
+        // else
+        //     way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+
+//***************************EXCLUSIVE POLICY(STILL INCOMPLETE,MAYBE EVEN WRONG)***************************************************************//
+
+//         uint8_t  do_fill = 1;
+//         if(cache_type==IS_LLC)
+//         {
+//           way = llc_find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+
+//           if(block[set][way].valid)
+//           {
+
+//             // check if the lower level WQ has enough room to keep this writeback request
+//             if (lower_level) {
+//                 if (lower_level->get_occupancy(2, block[set][way].address) == lower_level->get_size(2, block[set][way].address)) {
+
+//                     // lower level WQ is full, cannot replace this victim
+//                     do_fill = 0;
+//                     lower_level->increment_WQ_FULL(block[set][way].address);
+//                     STALL[MSHR.entry[mshr_index].type]++;
+
+//                     // DP ( if (warmup_complete[fill_cpu]) {
+//                     // cout << "[" << NAME << "] " << __func__ << "do_fill: " << +do_fill;
+//                     // cout << " lower level wq is full!" << " fill_addr: " << hex << MSHR.entry[mshr_index].address;
+//                     // cout << " victim_addr: " << block[set][way].tag << dec << endl; });
+//                 }
+//                 else {
+//                     PACKET writeback_packet;
+
+//                     writeback_packet.fill_level = fill_level << 1;
+//                     writeback_packet.cpu = fill_cpu;
+//                     writeback_packet.address = block[set][way].address;
+//                     writeback_packet.full_addr = block[set][way].full_addr;
+//                     writeback_packet.data = block[set][way].data;
+//                     writeback_packet.instr_id = MSHR.entry[mshr_index].instr_id;
+//                     writeback_packet.ip = 0; // writeback does not have ip
+//                     writeback_packet.type = WRITEBACK;
+//                     writeback_packet.event_cycle = current_core_cycle[fill_cpu];
+
+//                     lower_level->add_wq(&writeback_packet);
+//                 }
+//             }
+// #ifdef SANITY_CHECK
+//             else {
+//                 // sanity check
+//                 if (cache_type != IS_STLB)
+//                     assert(0);
+//             }
+// #endif
+//         }
+//         }
+//         else
+//         {
+//           way = find_victim(fill_cpu, MSHR.entry[mshr_index].instr_id, set, block[set], MSHR.entry[mshr_index].ip, MSHR.entry[mshr_index].full_addr, MSHR.entry[mshr_index].type);
+
+//           if(block[set][way].valid)
+//           {
+
+//             // check if the lower level WQ has enough room to keep this writeback request
+//             if (lower_level) {
+//                 if (lower_level->get_occupancy(2, block[set][way].address) == lower_level->get_size(2, block[set][way].address)) {
+
+//                     // lower level WQ is full, cannot replace this victim
+//                     do_fill = 0;
+//                     lower_level->increment_WQ_FULL(block[set][way].address);
+//                     STALL[MSHR.entry[mshr_index].type]++;
+
+//                     // DP ( if (warmup_complete[fill_cpu]) {
+//                     // cout << "[" << NAME << "] " << __func__ << "do_fill: " << +do_fill;
+//                     // cout << " lower level wq is full!" << " fill_addr: " << hex << MSHR.entry[mshr_index].address;
+//                     // cout << " victim_addr: " << block[set][way].tag << dec << endl; });
+//                 }
+//                 else {
+//                     PACKET writeback_packet;
+
+//                     writeback_packet.fill_level = fill_level << 1;
+//                     writeback_packet.cpu = fill_cpu;
+//                     writeback_packet.address = block[set][way].address;
+//                     writeback_packet.full_addr = block[set][way].full_addr;
+//                     writeback_packet.data = block[set][way].data;
+//                     writeback_packet.instr_id = MSHR.entry[mshr_index].instr_id;
+//                     writeback_packet.ip = 0; // writeback does not have ip
+//                     writeback_packet.type = WRITEBACK;
+//                     writeback_packet.event_cycle = current_core_cycle[fill_cpu];
+
+//                     lower_level->add_wq(&writeback_packet);
+//                 }
+//             }
+// #ifdef SANITY_CHECK
+//             else {
+//                 // sanity check
+//                 if (cache_type != IS_STLB)
+//                     assert(0);
+//             }
+// #endif
+//         }
+//         }
+
+//***************************************************************
 
 #ifdef LLC_BYPASS
         if ((cache_type == IS_LLC) && (way == LLC_WAY)) { // this is a bypass that does not fill the LLC
@@ -85,7 +227,7 @@ void CACHE::handle_fill()
 
         uint8_t  do_fill = 1;
 
-        // is this dirty?
+        //  // is this dirty?
         if (block[set][way].dirty) {
 
             // check if the lower level WQ has enough room to keep this writeback request
@@ -156,7 +298,9 @@ void CACHE::handle_fill()
             sim_miss[fill_cpu][MSHR.entry[mshr_index].type]++;
             sim_access[fill_cpu][MSHR.entry[mshr_index].type]++;
 
-            fill_cache(set, way, &MSHR.entry[mshr_index]);
+            // if(cache_type==IS_L1D || cache_type==IS_L1I) fill_cache(set, way, &MSHR.entry[mshr_index]); //EXCLUSIVE
+            
+            fill_cache(set, way, &MSHR.entry[mshr_index]); //Original
 
             // RFO marks cache line dirty
             if (cache_type == IS_L1D) {
@@ -187,7 +331,7 @@ void CACHE::handle_fill()
 		}
             }
 
-            // update processed packets
+            // update procesuint8_t  do_fill = 1;sed packets
             if (cache_type == IS_ITLB) { 
                 MSHR.entry[mshr_index].instruction_pa = block[set][way].data;
                 if (PROCESSED.occupancy < PROCESSED.SIZE)
@@ -594,7 +738,9 @@ void CACHE::handle_read()
                 sim_access[read_cpu][RQ.entry[index].type]++;
 
                 // check fill level
+//*******************************ORIGINAL**********************************************
                 if (RQ.entry[index].fill_level < fill_level) {
+
 
 		  if(fill_level == FILL_L2)
 		    {
@@ -615,6 +761,35 @@ void CACHE::handle_read()
                         upper_level_dcache[read_cpu]->return_data(&RQ.entry[index]);
 		    }
                 }
+
+//**************************************EXCLUSIVE******************************************//
+// if (RQ.entry[index].fill_level < fill_level) {
+
+//       uint64_t address = block[set][way].address;
+// 		  if(fill_level == FILL_L2)
+// 		    {
+// 		      if(RQ.entry[index].fill_l1i)
+// 			{
+// 			  upper_level_icache[read_cpu]->return_data(&RQ.entry[index]);
+//         invalidate_entry(address);
+// 			}
+// 		      if(RQ.entry[index].fill_l1d)
+// 			{
+// 			  upper_level_dcache[read_cpu]->return_data(&RQ.entry[index]);
+//         invalidate_entry(address);
+// 			}
+// 		    }
+// 		  else
+// 		    {
+// 		      if (RQ.entry[index].instruction)
+//                         upper_level_icache[read_cpu]->return_data(&RQ.entry[index]);
+//                         invalidate_entry(address);
+// 		      if (RQ.entry[index].is_data)
+//                         upper_level_dcache[read_cpu]->return_data(&RQ.entry[index]);
+//                         invalidate_entry(address);
+// 		    }
+//                 }
+//******************************************************************************************//
 
                 // update prefetch stats and reset prefetch bit
                 if (block[set][way].prefetch) {
@@ -649,7 +824,9 @@ void CACHE::handle_read()
 		  }
                 else if ((mshr_index == -1) && (MSHR.occupancy < MSHR_SIZE)) { // this is a new miss
 
-		  if(cache_type == IS_LLC)
+		  //********************ORIGINAL*************************************
+      
+      if(cache_type == IS_LLC)
 		    {
 		      // check to make sure the DRAM RQ has room for this LLC read miss
 		      if (lower_level->get_occupancy(1, RQ.entry[index].address) == lower_level->get_size(1, RQ.entry[index].address))
@@ -686,6 +863,8 @@ void CACHE::handle_read()
                         }
 		      }
 		    }
+
+      
                 }
                 else {
                     if ((mshr_index == -1) && (MSHR.occupancy == MSHR_SIZE)) { // not enough MSHR resource
