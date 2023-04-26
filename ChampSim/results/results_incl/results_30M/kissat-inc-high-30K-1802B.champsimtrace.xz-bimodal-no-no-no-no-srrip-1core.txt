@@ -12,15 +12,15 @@ CPU 0 runs /home/harshit/Documents/Projects/CS230/CS230-Project/ChampSim/dpc3_tr
 CPU 0 Bimodal branch predictor
 Initialize SRRIP state
 Heartbeat CPU 0 instructions: 10000001 cycles: 4044804 heartbeat IPC: 2.47231 cumulative IPC: 2.47231 (Simulation time: 0 hr 0 min 16 sec) 
-Heartbeat CPU 0 instructions: 20000001 cycles: 8506834 heartbeat IPC: 2.24113 cumulative IPC: 2.35105 (Simulation time: 0 hr 0 min 33 sec) 
-Heartbeat CPU 0 instructions: 30000000 cycles: 13141252 heartbeat IPC: 2.15777 cumulative IPC: 2.28289 (Simulation time: 0 hr 0 min 50 sec) 
+Heartbeat CPU 0 instructions: 20000001 cycles: 8506834 heartbeat IPC: 2.24113 cumulative IPC: 2.35105 (Simulation time: 0 hr 0 min 31 sec) 
+Heartbeat CPU 0 instructions: 30000000 cycles: 13141252 heartbeat IPC: 2.15777 cumulative IPC: 2.28289 (Simulation time: 0 hr 0 min 48 sec) 
 
-Warmup complete CPU 0 instructions: 30000002 cycles: 13141253 (Simulation time: 0 hr 0 min 50 sec) 
+Warmup complete CPU 0 instructions: 30000002 cycles: 13141253 (Simulation time: 0 hr 0 min 48 sec) 
 
-Heartbeat CPU 0 instructions: 40000003 cycles: 45549695 heartbeat IPC: 0.308562 cumulative IPC: 0.308562 (Simulation time: 0 hr 1 min 7 sec) 
-Heartbeat CPU 0 instructions: 50000002 cycles: 78006836 heartbeat IPC: 0.308099 cumulative IPC: 0.30833 (Simulation time: 0 hr 1 min 25 sec) 
-Heartbeat CPU 0 instructions: 60000001 cycles: 109929016 heartbeat IPC: 0.313262 cumulative IPC: 0.309957 (Simulation time: 0 hr 1 min 44 sec) 
-Finished CPU 0 instructions: 30000003 cycles: 96787764 cumulative IPC: 0.309957 (Simulation time: 0 hr 1 min 44 sec) 
+Heartbeat CPU 0 instructions: 40000003 cycles: 45549695 heartbeat IPC: 0.308562 cumulative IPC: 0.308562 (Simulation time: 0 hr 1 min 5 sec) 
+Heartbeat CPU 0 instructions: 50000002 cycles: 78006836 heartbeat IPC: 0.308099 cumulative IPC: 0.30833 (Simulation time: 0 hr 1 min 22 sec) 
+Heartbeat CPU 0 instructions: 60000001 cycles: 109929016 heartbeat IPC: 0.313262 cumulative IPC: 0.309957 (Simulation time: 0 hr 1 min 40 sec) 
+Finished CPU 0 instructions: 30000003 cycles: 96787764 cumulative IPC: 0.309957 (Simulation time: 0 hr 1 min 40 sec) 
 
 ChampSim completed all CPUs
 
