@@ -224,7 +224,7 @@ void CACHE::handle_fill()
 
         uint8_t  do_fill = 1;
 
-        is this dirty?
+        // is this dirty?
         if (block[set][way].dirty) {
 
             // check if the lower level WQ has enough room to keep this writeback request
