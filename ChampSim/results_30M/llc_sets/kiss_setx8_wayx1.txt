@@ -524,64 +524,64 @@ Assign rand_sets[254]: 7518  LLC: 16384
 rand_sets[254]: 7518
 Assign rand_sets[255]: 12970  LLC: 16384
 rand_sets[255]: 12970
-Heartbeat CPU 0 instructions: 10000001 cycles: 4044781 heartbeat IPC: 2.47232 cumulative IPC: 2.47232 (Simulation time: 0 hr 0 min 13 sec) 
-Heartbeat CPU 0 instructions: 20000001 cycles: 8506423 heartbeat IPC: 2.24133 cumulative IPC: 2.35116 (Simulation time: 0 hr 0 min 26 sec) 
-Heartbeat CPU 0 instructions: 30000000 cycles: 13140728 heartbeat IPC: 2.15782 cumulative IPC: 2.28298 (Simulation time: 0 hr 0 min 40 sec) 
+Heartbeat CPU 0 instructions: 10000001 cycles: 4044776 heartbeat IPC: 2.47233 cumulative IPC: 2.47233 (Simulation time: 0 hr 0 min 12 sec) 
+Heartbeat CPU 0 instructions: 20000001 cycles: 8506412 heartbeat IPC: 2.24133 cumulative IPC: 2.35117 (Simulation time: 0 hr 0 min 25 sec) 
+Heartbeat CPU 0 instructions: 30000000 cycles: 13140698 heartbeat IPC: 2.15783 cumulative IPC: 2.28298 (Simulation time: 0 hr 0 min 39 sec) 
 
-Warmup complete CPU 0 instructions: 30000002 cycles: 13140729 (Simulation time: 0 hr 0 min 40 sec) 
+Warmup complete CPU 0 instructions: 30000002 cycles: 13140699 (Simulation time: 0 hr 0 min 39 sec) 
 
-Heartbeat CPU 0 instructions: 40000000 cycles: 43027114 heartbeat IPC: 0.334601 cumulative IPC: 0.3346 (Simulation time: 0 hr 0 min 53 sec) 
-Heartbeat CPU 0 instructions: 50000002 cycles: 72810803 heartbeat IPC: 0.335754 cumulative IPC: 0.335176 (Simulation time: 0 hr 1 min 8 sec) 
-Heartbeat CPU 0 instructions: 60000001 cycles: 101960687 heartbeat IPC: 0.343055 cumulative IPC: 0.337762 (Simulation time: 0 hr 1 min 22 sec) 
-Finished CPU 0 instructions: 30000003 cycles: 88819959 cumulative IPC: 0.337762 (Simulation time: 0 hr 1 min 22 sec) 
+Heartbeat CPU 0 instructions: 40000003 cycles: 50124154 heartbeat IPC: 0.270391 cumulative IPC: 0.270391 (Simulation time: 0 hr 0 min 54 sec) 
+Heartbeat CPU 0 instructions: 50000002 cycles: 86876916 heartbeat IPC: 0.272088 cumulative IPC: 0.271237 (Simulation time: 0 hr 1 min 9 sec) 
+Heartbeat CPU 0 instructions: 60000001 cycles: 122749369 heartbeat IPC: 0.278765 cumulative IPC: 0.273701 (Simulation time: 0 hr 1 min 25 sec) 
+Finished CPU 0 instructions: 30000003 cycles: 109608671 cumulative IPC: 0.273701 (Simulation time: 0 hr 1 min 25 sec) 
 
 ChampSim completed all CPUs
 
 Region of Interest Statistics
 
-CPU 0 cumulative IPC: 0.337762 instructions: 30000003 cycles: 88819959
-L1D TOTAL     ACCESS:   10254733  HIT:    9699583  MISS:     555150
-L1D LOAD      ACCESS:    5781027  HIT:    5230871  MISS:     550156
-L1D RFO       ACCESS:    4473706  HIT:    4468712  MISS:       4994
+CPU 0 cumulative IPC: 0.273701 instructions: 30000003 cycles: 109608671
+L1D TOTAL     ACCESS:   10420390  HIT:    9865242  MISS:     555148
+L1D LOAD      ACCESS:    5886497  HIT:    5336343  MISS:     550154
+L1D RFO       ACCESS:    4533893  HIT:    4528899  MISS:       4994
 L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
 L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
 L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
-L1D AVERAGE MISS LATENCY: 157.457 cycles
-L1I TOTAL     ACCESS:    5645973  HIT:    5645973  MISS:          0
-L1I LOAD      ACCESS:    5645973  HIT:    5645973  MISS:          0
+L1D AVERAGE MISS LATENCY: 238.19 cycles
+L1I TOTAL     ACCESS:    5647541  HIT:    5647541  MISS:          0
+L1I LOAD      ACCESS:    5647541  HIT:    5647541  MISS:          0
 L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
 L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
 L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
 L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
 L1I AVERAGE MISS LATENCY: -nan cycles
-L2C TOTAL     ACCESS:     876188  HIT:     335904  MISS:     540284
-L2C LOAD      ACCESS:     550155  HIT:      14868  MISS:     535287
+L2C TOTAL     ACCESS:     876186  HIT:     335884  MISS:     540302
+L2C LOAD      ACCESS:     550153  HIT:      14847  MISS:     535306
 L2C RFO       ACCESS:       4994  HIT:          0  MISS:       4994
 L2C PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
-L2C WRITEBACK ACCESS:     321039  HIT:     321036  MISS:          3
+L2C WRITEBACK ACCESS:     321039  HIT:     321037  MISS:          2
 L2C PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
-L2C AVERAGE MISS LATENCY: 132.661 cycles
-LLC TOTAL     ACCESS:     851237  HIT:     528288  MISS:     322949
-LLC LOAD      ACCESS:     535287  HIT:     241516  MISS:     293771
+L2C AVERAGE MISS LATENCY: 217.111 cycles
+LLC TOTAL     ACCESS:     851331  HIT:     526507  MISS:     324824
+LLC LOAD      ACCESS:     535306  HIT:     239591  MISS:     295715
 LLC RFO       ACCESS:       4994  HIT:          1  MISS:       4993
 LLC PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
-LLC WRITEBACK ACCESS:     310956  HIT:     286771  MISS:      24185
+LLC WRITEBACK ACCESS:     311031  HIT:     286915  MISS:      24116
 LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
-LLC AVERAGE MISS LATENCY: 159.734 cycles
+LLC AVERAGE MISS LATENCY: 211.491 cycles
 Major fault: 0 Minor fault: 33316
 
 DRAM Statistics
  CHANNEL 0
- RQ ROW_BUFFER_HIT:      13266  ROW_BUFFER_MISS:     285498
- DBUS_CONGESTED:      43825
- WQ ROW_BUFFER_HIT:      12467  ROW_BUFFER_MISS:      93941  FULL:          0
+ RQ ROW_BUFFER_HIT:      13713  ROW_BUFFER_MISS:     286995
+ DBUS_CONGESTED:      39731
+ WQ ROW_BUFFER_HIT:      10572  ROW_BUFFER_MISS:      96903  FULL:          0
 
  AVG_CONGESTED_CYCLE: 6
 
-CPU 0 Branch Prediction Accuracy: 94.4124% MPKI: 9.227 Average ROB Occupancy at Mispredict: 75.3434
+CPU 0 Branch Prediction Accuracy: 94.4124% MPKI: 9.227 Average ROB Occupancy at Mispredict: 75.9722
 
 Branch types
-NOT_BRANCH: 25045705 83.4857%
+NOT_BRANCH: 25045704 83.4857%
 BRANCH_DIRECT_JUMP: 560396 1.86799%
 BRANCH_INDIRECT: 0 0%
 BRANCH_CONDITIONAL: 3395579 11.3186%
